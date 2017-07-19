@@ -11,7 +11,6 @@ interface IGogsService {
   public function getRepositoryList();
   public function searchRepositories($query);
   public function getUserRepositories(User $user);
-  public function getMyRepositories();
   public function getOrgRepositories($org);
 
   public function getRepository(User $user, $id);

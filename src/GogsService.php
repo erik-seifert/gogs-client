@@ -42,10 +42,6 @@ class GogsService implements IGogsService {
     return $this->castRepos($this->getJsonContent($this->client->get('users/'.$user->getUserName().'/repos')));
   }
 
-  public function getMyRepositories() {
-
-  }
-
   public function getOrgRepositories($org) {
 
   }
