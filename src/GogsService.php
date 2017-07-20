@@ -4,12 +4,17 @@ namespace bconnect\GogsClient;
 use GuzzleHttp\Client;
 use bconnect\GogsClient\IGogsRepoQuery;
 use bconnect\GogsClient\Repository\Repository;
+use bconnect\GogsClient\Organisation\Organisation;
 use bconnect\GogsClient\User\User;
 
 class GogsService implements IGogsService {
   protected $client;
   private function getJsonContent($response) {
     return json_decode($response->getBody()->getContents(), true);
+  }
+
+  private function getRawContent($response) {
+    return $response->getBody()->getContents();
   }
 
   private function castRepos($reps) {
@@ -20,7 +25,15 @@ class GogsService implements IGogsService {
     return new \ArrayIterator($oReps);
   }
 
-  public function __construct($url, $login, $password, $handler) {
+  private function castOrgs($orgs) {
+    $oOrgs = [];
+    foreach ($orgs as $org) {
+      $oOrgs[] = new Organisation($this, $org);
+    }
+    return new \ArrayIterator($oOrgs);
+  }
+
+  public function __construct($url, $login, $password, $handler = null) {
     $this->client = new Client([
         // Base URI is used with relative requests
         'base_uri' => $url,
@@ -51,22 +64,43 @@ class GogsService implements IGogsService {
   }
 
   public function getUserRepositories(User $user) {
-    return $this->castRepos($this->getJsonContent($this->client->get('users/'.$user->getUserName().'/repos')));
+    return $this->castRepos($this->getJsonContent($this->client->get("users/{$user->getUserName()}/repos")));
   }
 
   public function getOrgRepositories($org) {
 
   }
 
-  public function getRepository(User $user, $id) {
-
+  public function getRepository(Organisation $org, $repoName): Repository {
+    $repo = $this->getJsonContent($this->client->get("repos/{$org->getUsername()}/{$repoName}"));
+    return new Repository($this, $repo);
   }
 
   public function getBranchesForRepository(Repository $repository) {
 
   }
 
-  public function getRepositoryFileContent($repository, $ref, $path) {
+  public function getUser($username) {
+    return new User($this, $this->getJsonContent($this->client->get("users/{$username}")));
+  }
 
+  public function getOrganisation($orgName) {
+    $org = $this->getJsonContent($this->client->get("orgs/{$orgName}"));
+    return new Organisation($this, $org);
+  }
+
+  public function getRepositoryFileContent(Repository $repository, $ref, $path) {
+    return $this->getRawContent($this->client->get(implode('/',[
+      'repos',
+      $repository->getOwner()->getUsername(),
+      $repository->getName(),
+      'raw',
+      $ref,
+      'composer.json'
+    ])));
+  }
+
+  public function getOrganisations() {
+    return $this->castOrgs($this->getJsonContent($this->client->get("user/orgs")));
   }
 }

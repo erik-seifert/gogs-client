@@ -58,4 +58,8 @@ class User {
   public function setAvatarUrl() {
     return $this->avatar_url;
   }
+
+  public function getRepository($repoName) {
+    return $this->client->getRepository($this, $repoName);
+  }
 } 

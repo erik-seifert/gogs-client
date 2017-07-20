@@ -4,6 +4,7 @@ namespace bconnect\GogsClient\Repository;
 
 use bconnect\GogsClient\User\User;
 use bconnect\GogsClient\IGogsService;
+use bconnect\GogsClient\Organisation\Organisation;
 
 class Repository {
   protected $id;
@@ -14,7 +15,7 @@ class Repository {
   public function __construct(IGogsService $client, $values) {
     $this->client = $client;
     if ($values['owner']) {
-      $this->owner = new User($client, $values['owner']);
+      $this->owner = new Organisation($client, $values['owner']);
     }
     $this->id = $values['id'];
     $this->full_name = $values['full_name'];
@@ -33,7 +34,15 @@ class Repository {
     return $this->values['full_name'];
   }
 
+  public function getName() {
+    return explode('/', $this->getFullName())[1];
+  }
+
   public function getBranches() {
     return $this->client->getBranchesForRepository($this);
+  }
+
+  public function getFileContent($ref, $path) {
+    return $this->client->getRepositoryFileContent($this, $ref, $path);
   }
 }

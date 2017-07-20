@@ -5,6 +5,7 @@ namespace bconnect\GogsClient;
 use bconnect\GogsClient\IGogsRepoQuery;
 use bconnect\GogsClient\Repository\Repository;
 use bconnect\GogsClient\User\User;
+use bconnect\GogsClient\Organisation\Organisation;
 
 interface IGogsService {
   public function connect($url, $login, $password);
@@ -13,10 +14,15 @@ interface IGogsService {
   public function getUserRepositories(User $user);
   public function getOrgRepositories($org);
 
-  public function getRepository(User $user, $id);
+  public function getRepository(Organisation $user, $id);
 
   public function getBranchesForRepository(Repository $repository);
 
-  public function getRepositoryFileContent($repository, $ref, $path);
+  public function getRepositoryFileContent(Repository $repository, $ref, $path);
+
+  public function getUser($username);
+
+  public function getOrganisation($orgName);
+  public function getOrganisations();
 
 }
