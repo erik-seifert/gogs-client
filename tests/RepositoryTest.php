@@ -44,10 +44,10 @@ final class RepositoryTest extends TestCase {
       2,
       $reps->current()->getId()
     );
-    $reps->next();
+
     $this->assertEquals(
       8,
-      $reps->current()->getId()
+      $reps->offsetGet(1)->getId()
     );
   }
 }
