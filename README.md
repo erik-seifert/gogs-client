@@ -3,6 +3,8 @@
 
 ## Chainable
 ```
+use bconnect\GogsClient\GogsService;
+
 $service = new GogsService('http://try.gogs.io/api/v1/', 'admin', 'admin');
 
 foreach ($orgs->getOrganisations() as $org) {
