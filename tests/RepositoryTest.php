@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 use bconnect\GogsClient\GogsService;
 use bconnect\GogsClient\IGogsService;
 
+use bconnect\GogsClient\User\User;
+use bconnect\GogsClient\Repository\Repository;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -44,10 +47,20 @@ final class RepositoryTest extends TestCase {
       2,
       $reps->current()->getId()
     );
-
     $this->assertEquals(
       8,
       $reps->offsetGet(1)->getId()
     );
+
+    $this->assertInstanceOf(Repository::class, $reps->current());
+
+    $user = $reps->offsetGet(0)->getOwner();
+    $this->assertInstanceOf(User::class, $user);
+
+    $this->assertEquals(
+      $user->getUsername(),
+      'unknwon'
+    );
+
   }
 }
