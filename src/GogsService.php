@@ -17,7 +17,18 @@ class GogsService implements IGogsService {
     foreach ($reps as $rep) {
       $oReps[] = new Repository($this, $rep);
     }
-    return $oReps;
+    return new \ArrayIterator($oReps);
+  }
+
+  public function __construct($url, $login, $password, $handler) {
+    $this->client = new Client([
+        // Base URI is used with relative requests
+        'base_uri' => $url,
+        // You can set any number of default request options.
+        'timeout'  => 2.0,
+        'auth' => [$login, $password],
+        'handler' => ($handler) ? $handler : null
+    ]);
   }
 
   public function connect($url, $login, $password) {
@@ -27,6 +38,7 @@ class GogsService implements IGogsService {
         // You can set any number of default request options.
         'timeout'  => 2.0,
         'auth' => [$login, $password],
+        
     ]);
   }
 

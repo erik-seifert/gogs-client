@@ -14,5 +14,11 @@
         "psr-4": {
             "bconnect\\GogsClient\\": "src/"
         }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
     }
 }
