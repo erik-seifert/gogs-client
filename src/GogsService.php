@@ -5,6 +5,7 @@ use GuzzleHttp\Client;
 use bconnect\GogsClient\IGogsRepoQuery;
 use bconnect\GogsClient\Repository\Repository;
 use bconnect\GogsClient\Organisation\Organisation;
+use bconnect\GogsClient\Branch\Branch;
 use bconnect\GogsClient\User\User;
 
 class GogsService implements IGogsService {
@@ -33,6 +34,14 @@ class GogsService implements IGogsService {
     return new \ArrayIterator($oOrgs);
   }
 
+  private function castBranches($branches, $repo) {
+    $oBranches = [];
+    foreach ($branches as $branch) {
+      $oBranches[] = new Branch($this, $repo, $branch);
+    }
+    return new \ArrayIterator($oBranches);
+  }
+
   public function __construct($url, $login, $password, $handler = null) {
     $this->client = new Client([
         // Base URI is used with relative requests
@@ -41,17 +50,6 @@ class GogsService implements IGogsService {
         'timeout'  => 2.0,
         'auth' => [$login, $password],
         'handler' => ($handler) ? $handler : null
-    ]);
-  }
-
-  public function connect($url, $login, $password) {
-    $this->client = new Client([
-        // Base URI is used with relative requests
-        'base_uri' => $url,
-        // You can set any number of default request options.
-        'timeout'  => 2.0,
-        'auth' => [$login, $password],
-        
     ]);
   }
 
@@ -77,7 +75,8 @@ class GogsService implements IGogsService {
   }
 
   public function getBranchesForRepository(Repository $repository) {
-
+    $branches = $this->getJsonContent($this->client->get("repos/{$repository->getOwner()->getUsername()}/{$repository->getName()}/branches"));
+    return $this->castBranches($branches, $repository);
   }
 
   public function getUser($username) {

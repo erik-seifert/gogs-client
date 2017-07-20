@@ -45,4 +45,5 @@ class Repository {
   public function getFileContent($ref, $path) {
     return $this->client->getRepositoryFileContent($this, $ref, $path);
   }
+
 }

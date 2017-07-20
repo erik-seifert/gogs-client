@@ -8,7 +8,6 @@ use bconnect\GogsClient\User\User;
 use bconnect\GogsClient\Organisation\Organisation;
 
 interface IGogsService {
-  public function connect($url, $login, $password);
   public function getRepositoryList();
   public function searchRepositories($query);
   public function getUserRepositories(User $user);
