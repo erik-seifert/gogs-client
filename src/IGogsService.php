@@ -12,7 +12,7 @@ interface IGogsService {
   public function getRepositoryList();
   public function searchRepositories($query);
   public function getUserRepositories(User $user);
-  public function getOrgRepositories($org);
+  public function getOrganisationRepositories(Organisation $org);
 
   public function getRepository(Organisation $user, $id);
 
