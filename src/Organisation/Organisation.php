@@ -35,4 +35,8 @@ class Organisation {
     return $this->client->getOrganisationRepositories($this);
   }
 
+  public function getValues() {
+    return $this->values;
+  }
+
 }

@@ -10,6 +10,7 @@ class User {
   protected $username;
   protected $avatar_url;
   protected $client;
+  protected $values;
 
   public function __construct(IGogsService $client, $values) {
     $this->client = $client;
@@ -25,6 +26,7 @@ class User {
     if (isset($values['avatar_url'])) {
       $this->avatar_url = $values['avatar_url'];
     }
+    $this->values = $values;
   }
 
   public function setId($id) {
@@ -61,5 +63,9 @@ class User {
 
   public function getRepository($repoName) {
     return $this->client->getRepository($this, $repoName);
+  }
+
+  public function getValues() {
+    return $this->values;
   }
 } 
