@@ -46,4 +46,8 @@ class Repository {
     return $this->client->getRepositoryFileContent($this, $ref, $path);
   }
 
+  public function getValues() {
+    return $this->values;
+  }
+
 }
