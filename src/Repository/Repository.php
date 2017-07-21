@@ -15,7 +15,7 @@ class Repository {
   public function __construct(IGogsService $client, $values) {
     $this->client = $client;
     if ($values['owner']) {
-      $this->owner = new Organisation($client, $values['owner']);
+      $this->owner = $this->client->getOrganisation($values['owner']['username']);
     }
     $this->id = $values['id'];
     $this->full_name = $values['full_name'];
